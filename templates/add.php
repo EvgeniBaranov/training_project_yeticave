@@ -71,6 +71,9 @@
       </div>
     </div>
     <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>
+    <?php if (isset($lot)) : ?>
+    <span class="form__error form__error--bottom">$lot not empty</span>
+    <?php endif; ?>
     <button type="submit" class="button">Добавить лот</button>
   </form>
 </main>
