@@ -85,6 +85,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             "lot" => $lot
         ]);
     } else {
+        $sql = 'INSERT INTO lots () VALUES ()';
+        $stmt = db_get_prepare_stmt($con, $sql, $lot);
+        $res = mysqli_stmt_execute($stmt);
+
+        if($res) {
+            $lot_id = mysqli_insert_id($con);
+
+            header("Location: index_lot.php?id=" . $lot_id);
+        }
     }
 } else {
     $page_content = include_template("add.php", [
