@@ -10,7 +10,7 @@
 
 <main class="container">
   <?php $classname = isset($errors) ? "form--invalid" : ""; ?>
-  <form class="form form--add-lot container <?= $classname; ?>" action="add_lot.php" method="post">
+  <form class="form form--add-lot container <?= $classname; ?>" action="add_lot.php" method="post" enctype="multipart/form-data">
     <!-- form--invalid -->
     <h2>Добавление лота</h2>
     <div class="form__container-two">
@@ -39,16 +39,16 @@
       <textarea id="message" name="message" placeholder="Напишите описание лота"><?= $lot['message']; ?></textarea>
       <span class="form__error">Напишите описание лота</span>
     </div>
-    <?php $classname = isset($errors["lot-img"]) ? "form__item--invalid" : ""; ?>
+    <?php $classname = isset($errors["lot_img"]) ? "form__item--invalid" : ""; ?>
     <div class="form__item form__item--file <?= $classname; ?>">
       <label>Изображение <sup>*</sup></label>
       <div class="form__input-file">
-        <input class="visually-hidden" type="file" id="lot-img" value="" name = "lot-img">
+        <input class="visually-hidden" type="file" id="lot-img" value="" name = "lot_img">
         <label for="lot-img">
           Добавить
         </label>
       </div>
-      <span class="form__error"><?= $errors['lot-img']; ?></span>
+      <span class="form__error"><?= $errors['lot_img']; ?></span>
     </div>
     <div class="form__container-three">
     <?php $classname = isset($errors["lot-rate"]) ? "form__item--invalid" : ""; ?>
