@@ -13,8 +13,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $errors = [];
 
     $rules = [
+        "lot-name" => function ($value) {
+            return validate_length($value, 10, 200);
+        },
         "category" => function ($value) use ($categories_id) {
             return validate_category($value, $categories_id);
+        },
+        "message" => function ($value) {
+            return validate_length($value, 10, 2500);
         },
         "lot-rate" => function ($value) {
             return validate_num($value);
@@ -24,12 +30,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         },
         "lot-date" => function ($value) {
             return validate_date($value);
-        },
-        "message" => function ($value) {
-            return validate_length($value, 10, 2500);
-        },
-        "lot-name" => function ($value) {
-            return validate_length($value, 10, 200);
         }
     ];
 
@@ -85,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             "lot" => $lot
         ]);
     } else {
-        $sql = 'INSERT INTO lots () VALUES ()';
+        $sql = 'INSERT INTO lots (order_date, author_id, title, category_id, about, start_price, step, completion_date) VALUES (NOW(), 1, ?, ?, ?, ?, ?, ?)';
         $stmt = db_get_prepare_stmt($con, $sql, $lot);
         $res = mysqli_stmt_execute($stmt);
 
