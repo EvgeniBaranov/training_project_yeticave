@@ -84,13 +84,17 @@ function validate_length($value, $min, $max)
  */
 function validate_num($value)
 {
-    if (!empty($value)) {
-        $value = $value * 1;
-        if (is_int($value) && $value > 0) {
-            return NULL;
-        } else {
-            return 'Содержимое поля должно быть целым числом больше ноля';
+    if (is_numeric($value)) {
+        if (!empty($value)) {
+            $value = $value * 1;
+            if (is_int($value) && $value > 0) {
+                return NULL;
+            } else {
+                return 'Содержимое поля должно быть целым числом больше ноля';
+            }
         }
+    } else {
+        return 'Содержимое поля должно быть целым числом больше ноля';
     }
 };
 

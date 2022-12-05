@@ -85,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             "lot" => $lot
         ]);
     } else {
-        $sql = 'INSERT INTO lots (title, category_id, about, start_price, step, completion_date, author_id) VALUES (?, ?, ?, ?, ?, ?, 1)';
+        /*$sql = 'INSERT INTO lots (title, category_id, about, start_price, step, completion_date, author_id) VALUES (?, ?, ?, ?, ?, ?, 1)';
         $stmt = db_get_prepare_stmt($con, $sql, $lot);
         $res = mysqli_stmt_execute($stmt);
 
@@ -93,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $lot_id = mysqli_insert_id($con);
 
             header("Location: index_lot.php?id=" . $lot_id);
-        }
+        }*/
     }
 } else {
     $page_content = include_template("add.php", [
