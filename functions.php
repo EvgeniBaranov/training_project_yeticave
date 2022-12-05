@@ -22,7 +22,8 @@ function reformat_price(int $not_form_price)
  * @param string $lot_time Дата, указанная пользователем, окончания лота
  * @retern array
  */
-function get_time_left($lot_time) {
+function get_time_left($lot_time)
+{
     $today = date_create("now");
     $lot_time = date_create($lot_time);
     $diff = date_diff($lot_time, $today);
@@ -37,7 +38,7 @@ function get_time_left($lot_time) {
     $res[] = $minutes;
 
     return $res;
-}; 
+};
 
 /**
  * Валидиреут полученные категории в соответствии с БД, 
@@ -46,7 +47,8 @@ function get_time_left($lot_time) {
  * @param array $allowed_list категории из БД
  * @return string
  */
-function validate_category($id, $allowed_list) {
+function validate_category($id, $allowed_list)
+{
     if (!in_array($id, $allowed_list)) {
         return "Указана несуществующая категория";
     }
@@ -62,7 +64,8 @@ function validate_category($id, $allowed_list) {
  * @param string $value сообщение от пользователя
  * @return string
  */
-function validate_length($value, $min, $max) {
+function validate_length($value, $min, $max)
+{
     if ($value) {
         $len = strlen($value);
         if ($len < $min or $len > $max) {
@@ -71,23 +74,28 @@ function validate_length($value, $min, $max) {
     }
 
     return null;
-}
+};
 
 /**
- * Возвращает целое значение введенной переменной value (intval) и переменная больше 0,
+ * Возвращает целое значение введенной переменной value и переменная больше 0,
  * если оба условия верны - возвращает NULL, если одно из или оба не верны - сообщение об ошибке
  * @param string $value
  * @return string
  */
-function validate_num($value) {
-    if (is_int($value) && $value > 0) {
-        return NULL;
-    } else {
-        return 'Содержимое поля должно быть целым числом больше ноля';
+function validate_num($value)
+{
+    if (!empty($value)) {
+        $value = $value * 1;
+        if (is_int($value) && $value > 0) {
+            return NULL;
+        } else {
+            return 'Содержимое поля должно быть целым числом больше ноля';
+        }
     }
-}
+};
 
-function validate_date($value){
+function validate_date($value)
+{
     if (is_date_valid($value)) {
         $now = date_create("now");
         $lot_date = date_create($value);
@@ -99,5 +107,4 @@ function validate_date($value){
     } else {
         return "Содержимое поля «дата завершения» должно быть датой в формате «ГГГГ-ММ-ДД»";
     }
-}
-?>
+};

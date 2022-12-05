@@ -55,9 +55,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $errors = array_filter($errors);
 
-    if (!empty($_FILES["lot-img"]["name"])) {
-        $tmp_name = $_FILES["lot-img"]["tmp_name"];
-        $path = $_FILES["lot-img"]["name"];
+    if (!empty($_FILES["lot_img"]["name"])) {
+        $tmp_name = $_FILES["lot_img"]["tmp_name"];
+        $path = $_FILES["lot_img"]["name"];
         
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $file_type = finfo_file($finfo, $tmp_name);
@@ -72,10 +72,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $lot["path"] = $filename;
         }
         else {
-            $errors["lot-img"] = "Загрузите картинку в формате jpg, jpeg, png";
+            $errors["lot_img"] = "Загрузите картинку в формате jpg, jpeg, png";
         }
     } else {
-        $errors["lot-img"] = "Вы не загрузили файл";
+        $errors["lot_img"] = "Вы не загрузили файл";
     }
 
     if (count($errors)) {
@@ -85,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             "lot" => $lot
         ]);
     } else {
-        $sql = 'INSERT INTO lots (order_date, author_id, title, category_id, about, start_price, step, completion_date) VALUES (NOW(), 1, ?, ?, ?, ?, ?, ?)';
+        $sql = 'INSERT INTO lots (title, category_id, about, start_price, step, completion_date, author_id) VALUES (?, ?, ?, ?, ?, ?, 1)';
         $stmt = db_get_prepare_stmt($con, $sql, $lot);
         $res = mysqli_stmt_execute($stmt);
 
