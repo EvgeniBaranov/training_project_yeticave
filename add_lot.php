@@ -13,8 +13,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $errors = [];
 
     $rules = [
+        "lot-name" => function ($value) {
+            return validate_length($value, 10, 200);
+        },
         "category" => function ($value) use ($categories_id) {
             return validate_category($value, $categories_id);
+        },
+        "message" => function ($value) {
+            return validate_length($value, 10, 2500);
         },
         "lot-rate" => function ($value) {
             return validate_num($value);
@@ -24,12 +30,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         },
         "lot-date" => function ($value) {
             return validate_date($value);
-        },
-        "message" => function ($value) {
-            return validate_length($value, 10, 2500);
-        },
-        "lot-name" => function ($value) {
-            return validate_length($value, 10, 200);
         }
     ];
 
@@ -55,9 +55,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $errors = array_filter($errors);
 
-    if (!empty($_FILES["lot-img"]["name"])) {
-        $tmp_name = $_FILES["lot-img"]["tmp_name"];
-        $path = $_FILES["lot-img"]["name"];
+    if (!empty($_FILES["lot_img"]["name"])) {
+        $tmp_name = $_FILES["lot_img"]["tmp_name"];
+        $path = $_FILES["lot_img"]["name"];
         
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $file_type = finfo_file($finfo, $tmp_name);
@@ -69,13 +69,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         } else if ($file_type === "image/png") {
             $filename = uniqid() . ".png";
             move_uploaded_file($tmp_name, "uploads/" . $filename);
-            $lot["path"] = $filename;
+            $lot["path"] = "uploads/" . $filename;
         }
         else {
-            $errors["lot-img"] = "Загрузите картинку в формате jpg, jpeg, png";
+            $errors["lot_img"] = "Загрузите картинку в формате jpg, jpeg, png";
         }
     } else {
-        $errors["lot-img"] = "Вы не загрузили файл";
+        $errors["lot_img"] = "Вы не загрузили файл";
     }
 
     if (count($errors)) {
@@ -85,6 +85,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             "lot" => $lot
         ]);
     } else {
+        $sql = 'INSERT INTO lots (title, category_id, about, start_price, step, completion_date, img, author_id, order_date) VALUES (?, ?, ?, ?, ?, ?, ?, 1, NOW())';
+        $stmt = db_get_prepare_stmt($con, $sql, $lot);
+        $res = mysqli_stmt_execute($stmt);
+
+        if($res) {
+            $lot_id = mysqli_insert_id($con);
+
+            header("Location: index_lot.php?id=" . $lot_id);
+        }
     }
 } else {
     $page_content = include_template("add.php", [
